@@ -1,20 +1,10 @@
 name: dy_flutter
-description: A new Flutter project.
-
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.6-dev
+description: Douyu App of flutter.
+version: 1.2.0
 
 environment:
-  sdk: ">=2.3.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.22.0 <2.0.0"
 
 dependencies:
   flutter:
@@ -23,49 +13,38 @@ dependencies:
   fluttertoast: ^3.1.0
   path_provider: ^1.1.2
   flutter_screenutil: ^0.5.3
-  flutter_swiper: ^1.0.6
-  flutter_bloc: ^0.20.0
-  rxdart: ^0.22.0
+  flutter_swiper: ^1.1.6
+  flutter_bloc: ^6.1.1
+  rxdart: ^0.24.1
   equatable: ^0.3.0
-  dio: ^2.1.8
-  dio_http_cache: ^0.1.4
-  chewie: ^0.9.7
-  image_picker: ^0.6.1
-  flutter_webview_plugin: ^0.3.7
+  dio: ^3.0.0
+  dio_http_cache: ^0.2.11
+  video_player: ^1.0.1
+  image_picker: ^0.6.7
+  flutter_webview_plugin: ^0.3.11
   pull_to_refresh: ^1.5.5
   web_socket_channel: ^1.0.15
-  shared_preferences: ^0.5.3
-  wave: ^0.0.8
-  cached_network_image: ^1.1.1
+  shared_preferences: ^0.5.12
+  cached_network_image: ^2.1.0
   photo_view: ^0.9.0
-  barcode_scan: ^1.0.0
+  # barcode_scan: ^3.0.1
+  flutter_local_notifications: ^3.0.1
+  lottie: ^0.7.0
 
 dev_dependencies:
   mockito: ^4.1.0
   flutter_test:
     sdk: flutter
 
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
   assets:
     - images/pic-default.jpg
     - images/back.webp
     - images/default-avatar.webp
     - images/shayuniang.png
     - images/search.webp
-    - images/isLive.png
-    - images/next.png
+    - images/cfk.webp
     - images/hot.png
     - images/member.png
     - images/play.png
@@ -77,6 +56,33 @@ flutter:
     - images/init_logo.webp
     - images/init_icon.png
     - images/show-area.webp
+    - images/broadcast.webp
+    - images/fun_home_pull_down.png
+    - images/cjf.webp
+    - images/dg.webp
+    - images/dg0.webp
+    - images/cqe.webp
+    - images/num/0.webp
+    - images/num/1.webp
+    - images/num/2.webp
+    - images/num/3.webp
+    - images/num/4.webp
+    - images/num/5.webp
+    - images/num/6.webp
+    - images/num/7.webp
+    - images/num/8.webp
+    - images/num/9.webp
+    - images/cate/tab-0.webp
+    - images/cate/tab-1.webp
+    - images/cate/tab-2.webp
+    - images/cate/tab-3.webp
+    - images/cate/tab-4.webp
+    - images/cate/tab-5.webp
+    - images/cate/tab-6.webp
+    - images/cate/tab-7.webp
+    - images/cate/tab-8.webp
+    - images/cate/tab-9.webp
+    - images/cate/tab-10.webp
 
     - images/login/syn.webp
     - images/login/qq.webp
@@ -92,9 +98,6 @@ flutter:
     - images/head/chat.webp
     - images/head/game.webp
     - images/head/history.webp
-    - images/head/chat-gray.webp
-    - images/head/game-gray.webp
-    - images/head/history-gray.webp
 
     - images/lv/3.png
     - images/lv/30.png
@@ -126,29 +129,3 @@ flutter:
     - images/bar/chat-share.jpg
     - images/bar/chat-star.jpg
     - images/bar/chat-star-act.webp
-
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,4 +1,4 @@
-/**
+/*
  * @discripe: 鱼吧
  */
 import 'dart:ui';
@@ -26,10 +26,10 @@ class AnimatedLogo extends AnimatedWidget with DYBase {
     endH = direction == -1 ? DYBase.statusBarHeight + dp(55) : DYBase.statusBarHeight;
     beginO = direction == -1 ? 0 : 1;
     endO = direction == -1 ? 1 : 0;
-    _heightTween= Tween(
+    _heightTween = Tween(
       begin: beginH, end: endH,
     );
-    _opacityTween= Tween(
+    _opacityTween = Tween(
       begin: beginO, end: endO,
     );
   }
@@ -67,13 +67,13 @@ class _LogoAppState extends State<LogoApp> with DYBase, SingleTickerProviderStat
     controller.forward();
   }
 
-  Widget build(BuildContext context) {
-    return AnimatedLogo(animation: animation, direction: direction);
-  }
-
   dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  Widget build(BuildContext context) {
+    return AnimatedLogo(animation: animation, direction: direction);
   }
 }
 
@@ -150,7 +150,19 @@ class _FishBarPage extends State<FishBarPage> with DYBase {
     var color;
     switch (_navActIndex) {
       case 0:
-        return MyConcern(headerAnimated: _headerAnimated);
+        return NotificationListener(
+          onNotification: (notification) {
+            switch (notification.runtimeType){
+              case ScrollUpdateNotification:
+                if (notification?.dragDetails != null) {
+                  _onVerticalDragUpdate(notification.dragDetails);
+                }
+                break;
+            }
+            return true;
+          },
+          child: MyConcern(headerAnimated: _headerAnimated),
+        );
       case 1:
         color = Colors.lightGreen;
         break;
@@ -159,7 +171,7 @@ class _FishBarPage extends State<FishBarPage> with DYBase {
         break;
     }
     return ScrollConfiguration(
-      behavior: DyBehavior(),
+      behavior: DyBehaviorNull(),
       child: ListView(
         key: ObjectKey(_navActIndex),
         padding: EdgeInsets.all(0),

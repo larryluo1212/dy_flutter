@@ -1,4 +1,4 @@
-/**
+/*
  * @discripe: 鱼吧推荐帖子列表
  */
 import 'dart:ui' as ui;
@@ -54,6 +54,7 @@ class _FishBarCardList extends State<FishBarCardList> with DYBase {
       },
     );
     var list = res.data['data'];
+    if (mounted)
     setState(() {
       if (pageIndex == 0) {
         yuba = list;
@@ -304,7 +305,6 @@ class _FishBarCardList extends State<FishBarCardList> with DYBase {
                       ),
                       Container(
                         margin: EdgeInsets.only(left: dp(10)),
-                        height: dp(40),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,

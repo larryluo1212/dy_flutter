@@ -1,4 +1,4 @@
-/**
+/*
  * @discripe: 底部导航
  */
 import 'package:flutter/material.dart';
@@ -21,8 +21,8 @@ class DyIndexPage extends StatefulWidget {
 }
 
 class _DyIndexPageState extends State<DyIndexPage> with DYBase {
-  final _bottomNavList = ["推荐", "娱乐", "关注", "鱼吧", "发现"]; // 底部导航
-  DateTime _lastCloseApp; //上次点击时间
+  final _bottomNavList = ["推荐", "娱乐", "鱼吧", "关注", "发现"]; // 底部导航
+  DateTime _lastCloseApp; //上次点击返回按钮时间
   int _currentIndex = 0;  // 底部导航当前页面
   ScrollController _scrollController = ScrollController();  // 首页整体滚动控制器
   PageController _pageController = PageController();
@@ -49,7 +49,7 @@ class _DyIndexPageState extends State<DyIndexPage> with DYBase {
       onWillPop: () async {
         if (_lastCloseApp == null || DateTime.now().difference(_lastCloseApp) > Duration(seconds: 1)) {
           _lastCloseApp = DateTime.now();
-          Fluttertoast.showToast(msg: '再次返回退出斗鱼');
+          Fluttertoast.showToast(msg: '再按一次退出斗鱼');
           return false;
         }
         return true;
@@ -62,8 +62,8 @@ class _DyIndexPageState extends State<DyIndexPage> with DYBase {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: DYBase.defaultColor,
           unselectedItemColor: Color(0xff333333),
-          selectedFontSize: 11,
-          unselectedFontSize: 11,
+          selectedFontSize: dp(12),
+          unselectedFontSize: dp(12),
           onTap: (index) {
             if (mounted)
             setState(() {
@@ -73,27 +73,27 @@ class _DyIndexPageState extends State<DyIndexPage> with DYBase {
           },
           items: [
             BottomNavigationBarItem(
-                title: Text(_bottomNavList[0]),
+                label: _bottomNavList[0],
                 icon: _currentIndex == 0
                     ? _bottomIcon('images/nav/nav-12.jpg')
                     : _bottomIcon('images/nav/nav-11.jpg')),
             BottomNavigationBarItem(
-                title: Text(_bottomNavList[1]),
+                label: _bottomNavList[1],
                 icon: _currentIndex == 1
                     ? _bottomIcon('images/nav/nav-22.jpg')
                     : _bottomIcon('images/nav/nav-21.jpg')),
-            BottomNavigationBarItem(
-                title: Text(_bottomNavList[2]),
+              BottomNavigationBarItem(
+                label: _bottomNavList[2],
                 icon: _currentIndex == 2
-                    ? _bottomIcon('images/nav/nav-32.jpg')
-                    : _bottomIcon('images/nav/nav-31.jpg')),
-            BottomNavigationBarItem(
-                title: Text(_bottomNavList[3]),
-                icon: _currentIndex == 3
                     ? _bottomIcon('images/nav/nav-42.jpg')
                     : _bottomIcon('images/nav/nav-41.jpg')),
             BottomNavigationBarItem(
-                title: Text(_bottomNavList[4]),
+                label: _bottomNavList[3],
+                icon: _currentIndex == 3
+                    ? _bottomIcon('images/nav/nav-32.jpg')
+                    : _bottomIcon('images/nav/nav-31.jpg')),
+            BottomNavigationBarItem(
+                label: _bottomNavList[4],
                 icon: _currentIndex == 4
                     ? _bottomIcon('images/nav/nav-52.jpg')
                     : _bottomIcon('images/nav/nav-51.jpg')),
@@ -117,6 +117,10 @@ class _DyIndexPageState extends State<DyIndexPage> with DYBase {
     );
   }
 
+  void _openTestPage() {
+    Navigator.pushNamed(context, '/develop');
+  }
+
   // 底部导航对应的页面
   Widget _currentPage() {
     var pageInDevelop = Scaffold(
@@ -126,7 +130,7 @@ class _DyIndexPageState extends State<DyIndexPage> with DYBase {
           backgroundColor: DYBase.defaultColor,
           brightness: Brightness.dark,
           textTheme: TextTheme(
-            title: TextStyle(
+            headline6: TextStyle(
               color: Colors.white,
               fontSize: 18,
             ),
@@ -149,17 +153,20 @@ class _DyIndexPageState extends State<DyIndexPage> with DYBase {
         ),
         preferredSize: Size.fromHeight(dp(55)),
       ),
-      body: Center(child: Text(
-          '正在建设中...',
-          style: TextStyle(fontSize: 20, color: Colors.black45),
+      body: Center(
+        child: RaisedButton(
+          textColor: Colors.white,
+          color: DYBase.defaultColor,
+          child: Text('打开测试页面'),
+          onPressed: _openTestPage,
         ),
       ),
     );
     var _pages = [
       CommendPage(_scrollController),
       FunnyPage(),
-      FocusPage(),
       FishBarPage(),
+      FocusPage(),
       pageInDevelop,
     ];
 

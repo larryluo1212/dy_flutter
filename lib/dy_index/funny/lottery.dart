@@ -1,10 +1,11 @@
-/**
+/*
  * @discripe: 九宫格抽奖
  */
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../base.dart';
 import '../../service.dart';
@@ -24,6 +25,7 @@ class _Lottery extends State<Lottery> with DYBase {
   int runCount;    // 九宫格转动时的次数累计
   Timer timer;     // 转动时的计时器
   Map lotteryResult;    // 服务端返回的抽奖结果
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   void initState() {
@@ -104,7 +106,9 @@ class _Lottery extends State<Lottery> with DYBase {
             },
           );
         } else {
-          DYdialog.alert(context, title: '中奖了！', text: '恭喜您获得 ${lotteryResult['giftName']}',
+          var title = '中奖了！',
+              body = '恭喜您获得 ${lotteryResult['giftName']}';
+          DYdialog.alert(context, title: title, text: body,
             yesCallBack: () => {
               if (mounted)
               setState(() {
@@ -112,11 +116,47 @@ class _Lottery extends State<Lottery> with DYBase {
               })
             },
           );
+          _showNotification(title, body);
         }
         timer?.cancel();
         timer = null;
       }
     });
+  }
+
+  // 系统通知栏消息推送
+  void _showNotification(String title, String body) async {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/dy');
+    var initializationSettingsIOS = IOSInitializationSettings(
+      onDidReceiveLocalNotification: (int id, String title, String body, String payload) async => null);
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (String payload) async {
+      if (payload != null) {
+        print('notification payload: ' + payload);
+      }
+      // 点击通知栏跳转的页面(暂为空白)
+      // await Navigator.push(
+      //   context,
+      //   new MaterialPageRoute(builder: (context) => Container(color: Colors.white,)),
+      // );
+    });
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      '0', title, body,
+      importance: Importance.max, priority: Priority.high, ticker: 'ticker',
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      DYservice.randomBit(8, type: 'num'), title, body, platformChannelSpecifics,
+      payload: body
+    );
   }
 
   @override

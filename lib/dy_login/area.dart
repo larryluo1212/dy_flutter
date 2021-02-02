@@ -1,7 +1,6 @@
-/**
+/*
  * @discripe: 国家首字母选择页(仿微信联系人列表)
  */
-import 'dart:convert';
 import 'dart:ui';
 import 'dart:math';
 
@@ -84,7 +83,7 @@ class _AreaTel extends State<AreaTel> with DYBase {
         Duration(days: 365),
       ),
     );
-    var data = jsonDecode(res.data);
+    var data = res.data;
     var letterScrollTopMap = {};
     double height = 0;
     data.forEach((key, value) {

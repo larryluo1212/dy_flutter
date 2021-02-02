@@ -1,11 +1,12 @@
-/**
+/*
  * @discripe: app通用头部组件
  */
 import 'dart:ui';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/services.dart';
+// import 'package:barcode_scan/barcode_scan.dart';
+// import 'package:flutter/services.dart';
 
 import '../base.dart';
 import '../service.dart';
@@ -14,8 +15,7 @@ class DyHeader extends StatefulWidget {
   final num height;
   final num opacity;
   final BoxDecoration decoration;
-  final bool gray;
-  DyHeader({ this.height, this.opacity = 1.0, this.decoration, this.gray = false });
+  DyHeader({ this.height, this.opacity = 1.0, this.decoration });
 
   @override
   _DyHeader createState() => _DyHeader();
@@ -23,21 +23,21 @@ class DyHeader extends StatefulWidget {
 
 class _DyHeader extends State<DyHeader> with DYBase {
   TextEditingController _search = TextEditingController();
+  // ScanResult _scanResult;
 
   Future _scan() async {
-    try {
-       _search.text = await BarcodeScanner.scan();
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        DYdialog.alert(context, text: '设备未获得权限');
-      } else {
-        DYdialog.alert(context, text: '未捕获的错误: $e');
-      }
-    } on FormatException {  // 用户手动点击设备返回
-
-    } catch (e) {
-      DYdialog.alert(context, text: '未捕获的错误: $e');
-    }
+    // try {
+    //   _scanResult = await BarcodeScanner.scan();
+    //   if (_scanResult.rawContent != '') {
+    //     _search.text = _scanResult.rawContent;
+    //   }
+    // } on PlatformException catch (e) {
+    //   if (e.code == BarcodeScanner.cameraAccessDenied) {
+    //     DYdialog.alert(context, text: '设备未获得权限');
+    //   } else {
+    //     DYdialog.alert(context, text: '未捕获的错误: $e');
+    //   }
+    // }
   }
 
   @override
@@ -114,20 +114,22 @@ class _DyHeader extends State<DyHeader> with DYBase {
                                   fontSize: 14.0,
                                 ),
                                 decoration: InputDecoration(
-                                  border: InputBorder.none,
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none
+                                  ),
                                   contentPadding: EdgeInsets.all(0),
                                   hintText: '金咕咕doinb',
                                 ),
                               ),
                             ),
-                            GestureDetector(
+                            Platform.isAndroid ? GestureDetector(
                               onTap: _scan,
                               child: Image.asset(
                                 'images/head/camera.webp',
                                 width: dp(20),
                                 height: dp(15),
                               ),
-                            ),
+                            ) : SizedBox(),
                           ],
                         ),
                       ),
@@ -135,21 +137,21 @@ class _DyHeader extends State<DyHeader> with DYBase {
                     Padding(
                       padding: EdgeInsets.only(left: dp(10)),
                       child: Image.asset(
-                        widget.gray ? 'images/head/history-gray.webp' : 'images/head/history.webp',
+                        'images/head/history.webp',
                         width: dp(25),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: dp(10)),
                       child: Image.asset(
-                        widget.gray ? 'images/head/game-gray.webp' : 'images/head/game.webp',
+                        'images/head/game.webp',
                         width: dp(25),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: dp(10)),
                       child: Image.asset(
-                        widget.gray ? 'images/head/chat-gray.webp' : 'images/head/chat.webp',
+                        'images/head/chat.webp',
                         width: dp(25),
                       ),
                     ),

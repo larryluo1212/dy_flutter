@@ -1,4 +1,4 @@
-/**
+/*
  * @discripe: 斗鱼APP
  */
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'dy_init/index.dart';
 import 'dy_index/index.dart';
 import 'dy_room/index.dart';
 import 'dy_login/index.dart';
+import 'develop/index.dart';
 
 class DyApp extends StatelessWidget {
   // 路由路径匹配
@@ -29,7 +30,7 @@ class DyApp extends StatelessWidget {
             backgroundColor: DYBase.defaultColor,
             brightness: Brightness.dark,
             textTheme: TextTheme(
-              title: TextStyle(
+              headline6: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
               ),
@@ -37,7 +38,8 @@ class DyApp extends StatelessWidget {
             title: Text(arg['title']),
           ),
         );
-      }
+      },
+      '/develop': (BuildContext context) => DevelopPage(),
     };
     var widget = routes[settings.name];
 
@@ -56,40 +58,44 @@ class DyApp extends StatelessWidget {
     return MultiBlocProvider(     // 多个Bloc注册
       providers: [
         BlocProvider<CounterBloc>(
-          builder: (context) => BlocObj.counter,
+          create: (context) => BlocObj.counter,
         ),
         BlocProvider<IndexBloc>(
-          builder: (context) => BlocObj.index,
+          create: (context) => BlocObj.index,
         ),
       ],
       child: MaterialApp(
-          title: 'DYFlutter',
-          theme: ThemeData(
-            scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-            primarySwatch: Colors.orange,
-            textTheme: TextTheme(body1: TextStyle(color: Colors.black)),
-            appBarTheme: AppBarTheme(
-              textTheme: TextTheme(
-                title: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-                body1: TextStyle(color: Colors.black),
-              ),
-            )
-            // splashFactory: NoSplashFactory()
+        title: '斗鱼',
+        theme: ThemeData(
+          scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+          primarySwatch: Colors.orange,
+          textTheme: TextTheme(
+            bodyText1: TextStyle(color: Colors.black),
           ),
-          onGenerateRoute: _getRoute,
+          appBarTheme: AppBarTheme(
+            textTheme: TextTheme(
+              headline6: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+              ),
+              bodyText1: TextStyle(color: Colors.black),
+            ),
+          )
+          // splashFactory: NoSplashFactory()
         ),
+        onGenerateRoute: _getRoute,
+      ),
     );
   }
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   // 强制竖屏
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(DyApp());
 }

@@ -1,5 +1,5 @@
 library base;
-/**
+/*
  * @discripe: 全局公共类管理
  */
 import 'dart:ui';
@@ -15,7 +15,7 @@ export 'io.dart';
 // 所有Widget继承的抽象类
 abstract class DYBase {
   static final baseSchema = 'http';
-  static final baseHost = '10.113.22.82';
+  static final baseHost = '192.168.97.142';
   static final basePort = '1236';
   static final baseUrl = '${DYBase.baseSchema}://${DYBase.baseHost}:${DYBase.basePort}';
   // 默认斗鱼主题色

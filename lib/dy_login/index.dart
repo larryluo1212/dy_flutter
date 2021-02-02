@@ -1,4 +1,4 @@
-/**
+/*
  * @discripe: 登录注册页
  */
 import 'package:flutter/material.dart';
@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../base.dart';
+import '../service.dart';
 import 'area.dart';
 
 class DyLoginPage extends StatefulWidget {
@@ -77,6 +78,10 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
     setState(() {
       type = type == 0 ? 1 : 0;
     });
+  }
+
+  void _forgetPassword() {
+    DYdialog.alert(context, title: '太好了', text: '那你重新注册个号吧！');
   }
 
   void _showAreaList() {
@@ -200,7 +205,7 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                         child: TextField(
                           controller: _mobileController,
                           inputFormatters:  [
-                            WhitelistingTextInputFormatter(RegExp(r'[0-9]')),
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           ],
                           keyboardType: TextInputType.number,
                           cursorColor: DYBase.defaultColor,
@@ -210,7 +215,9 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                             fontSize: 14.0,
                           ),
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none
+                            ),
                             contentPadding: EdgeInsets.only(left: dp(15), top: dp(3), bottom: dp(3)),
                             hintText: '请输入手机号',
                           ),
@@ -240,7 +247,7 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                         child: TextField(
                           controller: _nickNameController,
                           inputFormatters:  [
-                            WhitelistingTextInputFormatter(RegExp(r'[0-9]')),
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           ],
                           keyboardType: TextInputType.number,
                           cursorColor: DYBase.defaultColor,
@@ -250,7 +257,9 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                             fontSize: 14.0,
                           ),
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none
+                            ),
                             contentPadding: EdgeInsets.only(left: dp(15), top: dp(3), bottom: dp(3)),
                             hintText: '昵称/用户名（5-30位字符）',
                           ),
@@ -281,7 +290,7 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                         child: TextField(
                           controller: _passWordController,
                           inputFormatters:  [
-                            BlacklistingTextInputFormatter(RegExp(r'[\u4e00-\u9fa5]')),
+                            FilteringTextInputFormatter.allow(RegExp(r'[\u4e00-\u9fa5]')),
                           ],
                           obscureText: true,
                           cursorColor: DYBase.defaultColor,
@@ -291,7 +300,9 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                             fontSize: 14.0,
                           ),
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none
+                            ),
                             contentPadding: EdgeInsets.only(left: dp(15), top: dp(3), bottom: dp(3)),
                             hintText: '请输入密码',
                           ),
@@ -323,7 +334,7 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                           controller: _codeController,
                           inputFormatters:  [
                             LengthLimitingTextInputFormatter(6),
-                            WhitelistingTextInputFormatter(RegExp(r'[0-9]')),
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           ],
                           cursorColor: DYBase.defaultColor,
                           cursorWidth: 1.5,
@@ -332,7 +343,9 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
                             fontSize: 14.0,
                           ),
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none
+                            ),
                             contentPadding: EdgeInsets.only(left: dp(15), top: dp(3), bottom: dp(3)),
                             hintText: '请输入验证码',
                           ),
@@ -386,11 +399,14 @@ class _DyLoginPage extends State<DyLoginPage> with DYBase {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                type != 0 ? Text('忘记密码？',
-                  style: TextStyle(
-                    color: Color(0xff999999),
-                  ),
-                ) : SizedBox(),
+                type != 0 ? GestureDetector(
+                  onTap: _forgetPassword,
+                  child: Text('忘记密码？',
+                    style: TextStyle(
+                      color: Color(0xff999999),
+                    ),
+                  ) 
+                ): SizedBox(),
                 type != 0 ? GestureDetector(
                   onTap: _changePhoneLogin,
                   child: Text(type == 2 ? '手机密码登录' : '手机验证码快捷登录',

@@ -1,4 +1,4 @@
-/**
+/*
  * @discripe: 推荐
  */
 import 'package:flutter/material.dart';
@@ -11,7 +11,9 @@ import '../../base.dart';
 import '../../service.dart';
 import '../header.dart';
 import 'swiper.dart';
+import 'broadcast.dart';
 import 'list.dart';
+import 'cate.dart';
 
 class CommendPage extends StatefulWidget {
   final _scrollController;
@@ -43,10 +45,10 @@ class _CommendPage extends State<CommendPage> with DYBase, AutomaticKeepAliveCli
     final counterBloc = BlocProvider.of<CounterBloc>(context);
     final indexBloc = BlocProvider.of<IndexBloc>(context);
 
-    counterBloc.dispatch(CounterEvent.reset);
+    counterBloc.add(CounterEvent.reset);
 
     var liveList = await DYservice.getLiveData(context, 1);
-    indexBloc.dispatch(UpdateLiveData(liveList));
+    indexBloc.add(UpdateLiveData(liveList));
     // setState(() => null);
 
     _refreshController.refreshCompleted();
@@ -56,10 +58,10 @@ class _CommendPage extends State<CommendPage> with DYBase, AutomaticKeepAliveCli
   void _onLoading() async {
     final indexBloc = BlocProvider.of<IndexBloc>(context);
 
-    List liveData = BlocObj.index.currentState['liveData'];
+    List liveData = BlocObj.index.state['liveData'];
     var liveList = await DYservice.getLiveData(context);
     liveData.addAll(liveList);
-    indexBloc.dispatch(UpdateLiveData(liveData));
+    indexBloc.add(UpdateLiveData(liveData));
     // setState(() => null);
 
     _refreshController.loadComplete();
@@ -81,8 +83,8 @@ class _CommendPage extends State<CommendPage> with DYBase, AutomaticKeepAliveCli
               headerSliverBuilder: (context, innerScrolled) => <Widget>[
                 /// 使用[SliverAppBar]组件实现下拉收起头部的效果
                 SliverAppBar(
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
+                  backgroundColor: Color(0xffff6634),
+                  brightness: Brightness.dark,
                   pinned: true,
                   floating: true,
                   snap: true,
@@ -92,33 +94,44 @@ class _CommendPage extends State<CommendPage> with DYBase, AutomaticKeepAliveCli
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                       ),
-                      gray: true,
                     ),
                   ],
                   flexibleSpace: FlexibleSpaceBar(  // 下拉渐入背景
                     background: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          begin: Alignment(0.0, 1),
-                          end: Alignment(0.0, -0.7),
+                          begin: FractionalOffset.centerLeft,
+                          end: FractionalOffset.centerRight,
                           colors: <Color>[
-                            Color(0xffffffff),
-                            Color(0xffff9b7a)
+                            Color(0xffff8633),
+                            Color(0xffff6634)
                           ],
                         ),
                       ),
                     ),
                   ),
                   bottom: TabBar(
+                    indicator: BoxDecoration(),
                     isScrollable: true,
-                    labelStyle: TextStyle(
+                    //设置tab文字得类型
+                    unselectedLabelStyle: TextStyle(
                       fontSize: 15,
                     ),
-                    labelColor: DYBase.defaultColor,
-                    indicatorColor: DYBase.defaultColor,
-                    indicatorPadding: EdgeInsets.only(bottom: dp(7)),
-                    unselectedLabelColor: Color(0xff333333),
-                    indicatorSize: TabBarIndicatorSize.label,
+                    labelStyle: TextStyle(
+                      fontSize: 18,
+                    ),
+                    //设置tab选中得颜色
+                    labelColor: Colors.white,
+                    //设置tab未选中得颜色
+                    unselectedLabelColor: Colors.white70,
+                    //设置自定义tab的指示器，CustomUnderlineTabIndicator
+                    //若不需要自定义，可直接通过
+                    // indicatorColor: Colors.white,  // 设置指示器颜色
+                    indicatorWeight: 3,  // 设置指示器厚度
+                    //indicatorPadding
+                    //indicatorSize  设置指示器大小计算方式
+                    ///指示器大小计算方式，TabBarIndicatorSize.label跟文字等宽,TabBarIndicatorSize.tab跟每个tab等宽
+                    // indicatorSize: TabBarIndicatorSize.label,
                     tabs: navList.map((e) => Tab(text: e)).toList(),
                   ),
                   forceElevated: innerScrolled,
@@ -126,27 +139,43 @@ class _CommendPage extends State<CommendPage> with DYBase, AutomaticKeepAliveCli
               ],
               body: TabBarView(
                 children: navList.asMap().map((i, tab) => MapEntry(i, Builder(
-                    builder: (context) => SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: WaterDropHeader(),
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      child: CustomScrollView(
-                        // physics: BouncingScrollPhysics(),
-                        slivers: <Widget>[
-                          SliverToBoxAdapter(
-                            child: Container(
-                              child: i == 0 ? Column(
-                                children: [
-                                  SWwiperWidgets(),
-                                  LiveListWidgets(indexState),
-                                ],
-                              ) : null,
+                    builder: (context) => Container(
+                      color: Colors.white,
+                      child: ScrollConfiguration(
+                        behavior: DyBehaviorNull(),
+                        child: RefreshConfiguration(
+                          headerTriggerDistance: dp(80),
+                          maxOverScrollExtent : dp(100),
+                          footerTriggerDistance: dp(50),
+                          maxUnderScrollExtent: 0,
+                          headerBuilder: () => DYrefreshHeader(),
+                          footerBuilder: () => DYrefreshFooter(),
+                          child: SmartRefresher(
+                            enablePullDown: true,
+                            enablePullUp: true,
+                            footer: DYrefreshFooter(bgColor: Color(0xfff1f5f6),),
+                            controller: _refreshController,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            child: CustomScrollView(
+                              // physics: BouncingScrollPhysics(),
+                              slivers: <Widget>[
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    child: i == 0 ? Column(
+                                      children: [
+                                        SwiperList(),
+                                        CateList(),
+                                        BroadcastSwiper(),
+                                        LiveList(),
+                                      ],
+                                    ) : null,
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
                     ),
                   ),),

@@ -1,8 +1,6 @@
-/**
+/*
  * @discripe: 载入APP启动页
  */
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +12,6 @@ import '../bloc.dart';
 import '../base.dart';
 import '../service.dart';
 import 'countdown.dart';
-import 'wave.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -48,7 +45,7 @@ class _SplashPageState extends State<SplashPage> with DYBase {
       API.nav,
     ).then((res) {
       var navList = res.data['data'];
-      indexBloc.dispatch(UpdateTab(navList));
+      indexBloc.add(UpdateTab(navList));
     });
   }
 
@@ -58,7 +55,7 @@ class _SplashPageState extends State<SplashPage> with DYBase {
 
     httpClient.post(
       API.swiper,
-      data: FormData.from({
+      data: FormData.fromMap({
         'num': 4
       }),
       options: buildCacheOptions(
@@ -67,9 +64,9 @@ class _SplashPageState extends State<SplashPage> with DYBase {
       ),
     ).then((res) {
       var swiper = res.data['data'];
-      indexBloc.dispatch(UpdateSwiper(swiper));
+      indexBloc.add(UpdateSwiper(swiper));
     }).catchError((err) {
-      indexBloc.dispatch(UpdateSwiper(null));
+      indexBloc.add(UpdateSwiper(null));
     });
   }
 
@@ -77,7 +74,7 @@ class _SplashPageState extends State<SplashPage> with DYBase {
     final indexBloc = BlocProvider.of<IndexBloc>(context);
 
     var liveList = await DYservice.getLiveData(context);
-    indexBloc.dispatch(UpdateLiveData(liveList));
+    indexBloc.add(UpdateLiveData(liveList));
   }
 
   @override
@@ -93,21 +90,22 @@ class _SplashPageState extends State<SplashPage> with DYBase {
               top: dp(25),
               child: CountdownInit(),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: dp(70)),),
-                Image.asset(
-                  'images/init_logo.webp',
-                  width: dp(300),
-                ),
-                Padding(padding: EdgeInsets.only(top: dp(70)),),
-                Image.asset(
-                  'images/init_icon.png',
-                  width: dp(90),
-                ),
-                WaveBtoom(),
-              ],
+            SizedBox(
+              width: dp(375),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    'images/init_logo.webp',
+                    width: dp(300),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: dp(70)),),
+                  Image.asset(
+                    'images/init_icon.png',
+                    width: dp(90),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
